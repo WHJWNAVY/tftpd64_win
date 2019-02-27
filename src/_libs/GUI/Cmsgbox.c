@@ -11,7 +11,6 @@
 #include <Windowsx.h>
 #include <strsafe.h>
 #include "cmsgbox.h"
-
 #define SizeOfTab(x) (sizeof (x) / sizeof (x[0]))
 
 // 4 button max by dialog box
@@ -172,7 +171,7 @@ HDC 		hDC;
 
 		// we have reached an end of line (or the last char)
 		// take its length
-		Rc = GetTextExtentPoint32 (hDC, lpPrev, lpCur-lpPrev, & subRect);
+		Rc = (BOOL) GetTextExtentPoint32 (hDC, lpPrev, lpCur-lpPrev, & subRect);
 		// keep the max
 		lpRect->cx = max (lpRect->cx, subRect.cx);
 		// add a text line

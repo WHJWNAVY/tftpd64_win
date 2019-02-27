@@ -148,7 +148,7 @@ char sz [256], *p=NULL;	// DNS Server
      GetDlgItemText (hMainWnd, IDC_DHCP_DEFAULT_ROUTER,  sNewParamDHCP.szGateway, sizeof sNewParamDHCP.szGateway - 1);
 		 if (sNewParamDHCP.szGateway[0]!=0  &&  CheckInetAddress (hMainWnd, sNewParamDHCP.szGateway, "DHCP Default Router", TRUE)) iErr=1;
      GetDlgItemText (hMainWnd, IDC_DHCP_MASK,  sNewParamDHCP.szMask, sizeof sNewParamDHCP.szMask - 1);
-		 if (CheckInetAddress (hMainWnd, sNewParamDHCP.szMask, "DHCP Mask", TRUE)) iErr=1;
+		 if (CheckInetAddress (hMainWnd, sNewParamDHCP.szMask, "DHCP Mask", sNewParamDHCP.nPoolSize != 0)) iErr=1;
 //   GetDlgItemText (hWnd, IDC_DHCP_MASK,  szBuf, sizeof szBuf - 1);
 //		 if (CheckInetAddress (hMainWnd, szBuf, "DHCP Mask", TRUE)) iErr=1;
 //		 sNewParamDHCP.dwMask.s_addr= inet_addr (szBuf);
@@ -189,12 +189,16 @@ char sz [256], *p=NULL;	// DNS Server
 //     if ( strlen(sNewParamDHCP.szAddr)==0 || strlen(sNewParamDHCP.szMask)==0)
 //		return FALSE;
 
-     // load again (warkaround for a LCC bug)
-     sNewParamDHCP.nPoolSize = GetDlgItemInt (hMainWnd, IDC_DHCP_POOL_SIZE, NULL, FALSE);
-     if (sNewParamDHCP.nPoolSize == 0)   MY_WARNING ("DHCP Pool is empty.\nDHCP server will only assign\nstatic leases");
-	 
-	 // PJO 30/04/2018 : warning if no gateway
-	 if (sNewParamDHCP.szGateway[0]==0)  MY_WARNING ("Gateway is empty.\nNo default route will be passed by DHCP server");
+	 // change: 2019 : do not warn if address is empty
+	 if (sNewParamDHCP.szAddr[0] != 0)
+	 {
+		 // load again (warkaround for a LCC bug)
+		 sNewParamDHCP.nPoolSize = GetDlgItemInt(hMainWnd, IDC_DHCP_POOL_SIZE, NULL, FALSE);
+		 if (sNewParamDHCP.nPoolSize == 0)   MY_WARNING("DHCP Pool is empty.\nDHCP server will only assign\nstatic leases");
+
+		 // PJO 30/04/2018 : warning if no gateway
+		 if (sNewParamDHCP.szGateway[0] == 0)  MY_WARNING("Gateway is empty.\nNo default route will be passed by DHCP server");
+	 }
 
 //	 if (memcmp (& sGuiParamDHCP, & sNewParamDHCP, sizeof sNewParamDHCP) !=0)
 //	 {

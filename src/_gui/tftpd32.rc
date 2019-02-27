@@ -9,8 +9,8 @@
 //
 
 1 VERSIONINFO
- FILEVERSION 4,62,0,0
- PRODUCTVERSION 4,62,0,0
+ FILEVERSION 4,64,0,0
+ PRODUCTVERSION 4,64,0,0
  FILEFLAGSMASK 0x0L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -29,7 +29,7 @@ BEGIN
             VALUE "FileDescription", "TFTP server"
             VALUE "LegalCopyright", "see license in about box"
             VALUE "OriginalFileName", "tftpd32"
-            VALUE "ProductVersion", "4.62"
+            VALUE "ProductVersion", "4.64"
         END
     END
     BLOCK "VarFileInfo"
@@ -133,7 +133,7 @@ BEGIN
     CTEXT           "TFTPD32",IDC_TFTPD_STRING,6,7,167,9
 END
 
-IDD_DIALOG_SETTINGS DIALOGEX 20, 65521, 244, 311
+IDD_DIALOG_SETTINGS DIALOGEX 20, 65521, 256, 323
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Set to: Tftpd32/64: Settings"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
@@ -143,7 +143,7 @@ BEGIN
     PUSHBUTTON      "&Help",IDC_TFTPD_HELP,122,289,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,180,289,50,14
 
-    CONTROL         "",IDC_TAB_SETTINGS,"SysTabControl32",WS_TABSTOP,4,4,236,280,WS_EX_CONTROLPARENT
+    CONTROL         "",IDC_TAB_SETTINGS,"SysTabControl32",WS_TABSTOP,4,4,236,292,WS_EX_CONTROLPARENT
 	
 	
    GROUPBOX        "Base Directory",IDC_GRP_TFTP,7,5,228,30
@@ -167,6 +167,9 @@ BEGIN
     EDITTEXT        IDC_SYSLOG_FILE,174,73,50,12,ES_AUTOHSCROLL | WS_DISABLED
     LTEXT           "To file",IDC_TXT_SYSLOGTOFILE,147,75,20,10
 	
+   GROUPBOX        "DNS relay",IDC_GRP_DNS,6, 33,228,70
+    LTEXT          "External DNS server should be configured in the Network and Sharing Center",IDC_TXT_DNS,14,44,200,50
+
     
    GROUPBOX        "TFTP Security",IDC_GRP_TFTP_SEC,6,126,81,56
     CONTROL         "None",IDC_RADIO_SECNONE,"Button",BS_AUTORADIOBUTTON,14,135,65,8
@@ -199,6 +202,7 @@ BEGIN
     CONTROL         "Create ""dir.txt"" files",IDC_CHECK_DIRTEXT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,210,90,8
     CONTROL         "Create md5 files",IDC_CHECK_MD5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,222,90,8
     CONTROL         "Beep for long transfer",IDC_CHECK_BEEP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,130,234,90,8
+	CONTROL         "Reduce '//' in file path", IDC_REDUCE_PATH, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 130, 246, 90, 8
 
    GROUPBOX        "DHCP Pool definition",IDC_GRP_DHCP_POOL,6,  45,228,  100
     LTEXT           "IP pool start address",IDC_TXT_ADDRESS_POOL,249,17,58,10
@@ -297,8 +301,8 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_TFTPD32NEW          ICON                    "tftpd32_new.ico"
-IDI_TFTPD32             ICON                    "tftpd32.ico"
+IDI_TFTPD32          ICON                    "tftpd32_new.ico"
+//IDI_TFTPD32_OLD             ICON                    "tftpd32.ico"
 IDI_TFTPD32KILL         ICON                    "tftpd32kill.ico"
 
 /////////////////////////////////////////////////////////////////////////////

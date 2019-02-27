@@ -6,9 +6,12 @@
 //////////////////////////////////////////////////////
 
 // registry key :
-//       HKEY_LOCAL_MACHINE\SOFTWARE\TFTPD32
-
-
+//       REGISTRY_HKEY\SOFTWARE\TFTPD32
+#ifdef _M_X64
+#  define REGISTRY_HKEY HKEY_CURRENT_USER
+#else
+#  define REGISTRY_HKEY HKEY_LOCAL_MACHINE
+#endif
 
 // some shortcurts
 #define ISDLG_CHECKED(hWnd,Ctrl) \
@@ -41,13 +44,15 @@
 enum { ONGLET_SETTINGS_GLOBAL = 0,
 	   ONGLET_SETTINGS_TFTP,
        ONGLET_SETTINGS_DHCP,
-       ONGLET_SETTINGS_SYSLOG,
+	   ONGLET_SETTINGS_SYSLOG,
+	   ONGLET_SETTINGS_DNS,
        NB_ONGLETS };
 // tab masks : 1>>Onglet
 #define TAB_SETTINGS_GLOBAL   MakeMask(ONGLET_SETTINGS_GLOBAL)
 #define TAB_SETTINGS_TFTP     MakeMask(ONGLET_SETTINGS_TFTP)
 #define TAB_SETTINGS_SYSLOG   MakeMask(ONGLET_SETTINGS_SYSLOG)
 #define TAB_SETTINGS_DHCP     MakeMask(ONGLET_SETTINGS_DHCP)
+#define TAB_SETTINGS_DNS      MakeMask(ONGLET_SETTINGS_DNS)
 #define TAB_NONE              MakeMask(NB_ONGLETS)
 #define TAB_ALL               (DWORD) -1
 
@@ -80,13 +85,13 @@ tResize [] =
 	{	IDC_BASEDIR,                14,  41,164, 12,   TAB_SETTINGS_TFTP,  },
 	{	IDC_BUTTON_BROWSE,         185,  41, 39, 13,   TAB_SETTINGS_TFTP,  },
 
-	{	IDC_GRP_TFTP_SEC,            6,  68, 78, 57,   TAB_SETTINGS_TFTP,  },
+	{	IDC_GRP_TFTP_SEC,            6,  65, 78, 60,   TAB_SETTINGS_TFTP,  },
 	{	IDC_RADIO_SECNONE,          14,  77, 65,  8,   TAB_SETTINGS_TFTP,  },
 	{	IDC_RADIO_SECSTD,           14,  89, 65,  8,   TAB_SETTINGS_TFTP,  },
 	{	IDC_RADIO_SECHIGH,          14, 101, 65,  8,   TAB_SETTINGS_TFTP,  },
 	{	IDC_RADIO_SECRO,            14, 113, 65,  8,   TAB_SETTINGS_TFTP,  },
 
-	{	IDC_GRP_TFTP_CFG,           91,  68,142, 57,   TAB_SETTINGS_TFTP,  },
+	{	IDC_GRP_TFTP_CFG,           91,  65,142, 60,   TAB_SETTINGS_TFTP,  },
 	{	IDC_TXT_TFTP_TIMEOUT,       98,  77, 71, 10,   TAB_SETTINGS_TFTP,  },
 	{	IDC_TXT_TFTP_RETRANSMIT,    98,  89, 71, 10,   TAB_SETTINGS_TFTP,  },
 	{	IDC_TXT_TFTP_PORT,          98, 101, 68, 10,   TAB_SETTINGS_TFTP,  },
@@ -96,7 +101,7 @@ tResize [] =
 	{	IDC_PORT,                  174,  99, 50, 12,   TAB_SETTINGS_TFTP,  },
 	{	IDC_LOCAL_PORTS,           174, 110, 50, 12,   TAB_SETTINGS_TFTP,  },
 
-	{	IDC_GRP_TFTP_ADVANCED,       6, 132,228,147,   TAB_SETTINGS_TFTP,  },
+	{	IDC_GRP_TFTP_ADVANCED,       6, 129,228,162,   TAB_SETTINGS_TFTP,  },
 	{	IDC_CHECK_NEGOCIATE,        13, 143, 83,  8,   TAB_SETTINGS_TFTP,  },
 	{	IDC_CHECK_PXE,              13, 155, 83,  8,   TAB_SETTINGS_TFTP,  },
 	{	IDC_CHECK_PROGRESS,         13, 167, 99,  8,   TAB_SETTINGS_TFTP,  },
@@ -111,7 +116,8 @@ tResize [] =
   	{   IDC_CHECK_DIRTEXT,          13, 239, 90,  8,   TAB_SETTINGS_TFTP,  },
   	{   IDC_CHECK_MD5,              13, 251, 90,  8,   TAB_SETTINGS_TFTP,  },
   	{   IDC_CHECK_BEEP,             13, 263, 90,  8,   TAB_SETTINGS_TFTP,  },
-	
+	{   IDC_REDUCE_PATH,            13, 275, 90,  8,   TAB_SETTINGS_TFTP,  },
+
 	// DHCP tab
  	{   IDC_GRP_DHCP,                6, 213,228, 61,   TAB_SETTINGS_DHCP,  },
  	{   IDC_CHECK_PING,             12, 222,115, 10,   TAB_SETTINGS_DHCP,  },
@@ -157,12 +163,15 @@ tResize [] =
 	{	IDC_TXT_SYSLOGTOFILE,      34, 80, 25, 10,   TAB_SETTINGS_SYSLOG,  },
 	{	IDC_SYSLOG_FILE,           59, 80,170, 12,   TAB_SETTINGS_SYSLOG,  },
 
+	// DNS
+	{	IDC_GRP_DNS,             6, 33,228, 70,   TAB_SETTINGS_DNS,        },
+	{   IDC_TXT_DNS,            14, 44, 200, 50,  TAB_SETTINGS_DNS,        },
 
 	// ALL
- 	{   IDOK,                        6,289, 50, 14,   TAB_ALL,            },
- 	{   IDC_BUTTON_DEFAULT,         64,289, 50, 14,   TAB_ALL,            },
-  	{   IDC_TFTPD_HELP,            122,289, 50, 14,   TAB_ALL,            },
-  	{   IDCANCEL,                  180,289, 50, 14,   TAB_ALL,            },
+ 	{   IDOK,                        6,301, 50, 14,   TAB_ALL,            },
+ 	{   IDC_BUTTON_DEFAULT,         64,301, 50, 14,   TAB_ALL,            },
+  	{   IDC_TFTPD_HELP,            122,301, 50, 14,   TAB_ALL,            },
+  	{   IDCANCEL,                  180,301, 50, 14,   TAB_ALL,            },
 };
 
 
@@ -205,6 +214,7 @@ tTabSettingsCtrlData [] =
 	ONGLET_SETTINGS_TFTP,    "TFTP",     "tftp server",
 	ONGLET_SETTINGS_DHCP,    "DHCP",     "dhcp server",
 	ONGLET_SETTINGS_SYSLOG,  "SYSLOG",   "syslog server",
+	ONGLET_SETTINGS_DNS,     "DNS",      "dns relay",
 };  // tTabCtrlData
 static int bInit=FALSE;
 
@@ -337,8 +347,10 @@ char        sz [32];
         sNewSettings.bMD5        = ISDLG_CHECKED (hWnd, IDC_CHECK_MD5);
         sNewSettings.bUnixStrings= ISDLG_CHECKED (hWnd, IDC_CHECK_UNIX);
         sNewSettings.bBeep       = ISDLG_CHECKED (hWnd, IDC_CHECK_BEEP);
-        sNewSettings.bVirtualRoot= ISDLG_CHECKED (hWnd, IDC_CHECK_VROOT);
+		sNewSettings.bReduceTFTPPath = ISDLG_CHECKED (hWnd, IDC_REDUCE_PATH);
+		sNewSettings.bVirtualRoot= ISDLG_CHECKED (hWnd, IDC_CHECK_VROOT);
         sNewSettings.bPXECompatibility = ISDLG_CHECKED (hWnd, IDC_CHECK_PXE);
+		
         // Sécurité sur l'accès
         if (ISDLG_CHECKED (hWnd, IDC_CHECK_TFTPLOCALIP))
              ComboBox_GetText (GetDlgItem(hWnd, IDC_CB_TFTPLOCALIP), sNewSettings.szTftpLocalIP, sizeof sNewSettings.szTftpLocalIP);
@@ -528,7 +540,8 @@ BOOL FormMain_OnInitDialog(HWND hWnd, HWND hwndFocus, LPARAM lParam)
      CHECK_DLG_IF (hWnd, IDC_CHECK_MD5,      sGuiSettings.bMD5);
      CHECK_DLG_IF (hWnd, IDC_CHECK_UNIX,     sGuiSettings.bUnixStrings);
      CHECK_DLG_IF (hWnd, IDC_CHECK_BEEP,     sGuiSettings.bBeep);
-     CHECK_DLG_IF (hWnd, IDC_CHECK_VROOT,    sGuiSettings.bVirtualRoot);
+	 CHECK_DLG_IF (hWnd, IDC_REDUCE_PATH,    sGuiSettings.bReduceTFTPPath);
+	 CHECK_DLG_IF (hWnd, IDC_CHECK_VROOT,    sGuiSettings.bVirtualRoot);
      SetDlgItemInt (hWnd, IDC_WINSIZE, sGuiSettings.WinSize, FALSE);
 
      // Limitations des acces
@@ -710,7 +723,12 @@ char  sz[128];
     GetWindowRect (hMainWnd, &R);
     wsprintf (sz, "%d %d %d %d ", R.left, R.top, R.right, R.bottom);
 
-    Rc = RegCreateKeyEx (HKEY_LOCAL_MACHINE,
+    Rc = RegCreateKeyEx (
+#ifdef  _WIN64
+						 HKEY_CURRENT_USER,
+#else
+						 HKEY_LOCAL_MACHINE,
+#endif
                          TFTPD32_MAIN_KEY,
                          0,
                          NULL,
@@ -718,8 +736,8 @@ char  sz[128];
                          KEY_WRITE,
                          NULL,
                         &hKey,
-                        &dwState) == ERROR_SUCCESS;
-    Rc &=      SAVEKEY (KEY_WINDOW_POS,sz,REG_SZ);
+                        &dwState);
+    if (Rc == ERROR_SUCCESS)   SAVEKEY (KEY_WINDOW_POS,sz,REG_SZ);
     if (hKey!=INVALID_HANDLE_VALUE)  RegCloseKey (hKey);
 return Rc;
 } // Tftpd32SaveWindowPos
@@ -735,8 +753,13 @@ INT   Rc, Ark=0;
 char  sz[128], *pCur, *pNext;
 
 
-   Rc = RegOpenKeyEx (HKEY_LOCAL_MACHINE,    // Key handle at root level.
-                      TFTPD32_MAIN_KEY,      // Path name of child key.
+   Rc = RegOpenKeyEx ( // Key handle at root level.
+#ifdef  _WIN64
+					  HKEY_CURRENT_USER,
+#else
+					  HKEY_LOCAL_MACHINE,
+#endif
+					  TFTPD32_MAIN_KEY,      // Path name of child key.
                       0,                      // Reserved.
                       KEY_READ,                // Requesting read access.
                     & hKey);                 // Address of key to be returned.

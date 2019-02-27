@@ -86,6 +86,7 @@
 #define IDC_GRP_DHCP_POOL    1217
 #define IDC_GRP_DHCP_OPT     1218
 #define IDC_GRP_GLOBAL_IPv6  1219
+#define IDC_GRP_DNS          1220
 
 #define IDC_TRF_PROGRESS    1280
 #define    IDC_FILE_SIZE       1281
@@ -117,6 +118,7 @@
 #define    IDC_CHECK_SNTP_SERVER   1323
 #define    IDC_CHECK_DNS_SERVER    1324
 #define    IDC_CHECK_IPv6          1325
+#define    IDC_REDUCE_PATH		   1326
 
 #define    IDC_CHECK_PXE           1330
 #define    IDC_CHECK_MD5           1331
