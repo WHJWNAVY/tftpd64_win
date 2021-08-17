@@ -1,6 +1,6 @@
 **Project Description** 
 
-Fork from [phjounin tftpd64 @bitbucket.org](https://bitbucket.org/phjounin/tftpd64.git)
+Fork from ~~[phjounin tftpd64 @bitbucket.org](https://bitbucket.org/phjounin/tftpd64.git)~~ [PJO2 tftpd64 @github.com](https://github.com/PJO2/tftpd64)
 
 Tftpd64 is a lightweight multi-threaded set of servers : TFTP, DNS, SNTP, SYSLOG and DHCP.  
 
